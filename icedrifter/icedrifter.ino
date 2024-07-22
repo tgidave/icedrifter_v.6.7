@@ -117,19 +117,23 @@ void printHexChar(uint8_t x) {
   Serial.print(hexchars[(x & 0x0f)]);
 }
 
-// Accumulate and send data. This function captures the sender
-// data and sends that data to the user.
-
 uint8_t* checkForMessage(void) {
 
   if (gotMessage == true) {
+#ifdef SERIAL_DEBUG
+    DEBUG_SERIAL.println("Got msg!");
+#endif
     gotMessage = false;
     return((uint8_t *)&messageBuff);
   }
-
-  return(0);
+#ifdef SERIAL_DEBUG
+  DEBUG_SERIAL.println("No msg!");
+#endif
+  return(NULL);
 }
 
+// Accumulate and send data. This function captures the sender
+// data and sends that data to the user.
 void accumulateandsendData(void) {
 
   int i, j;

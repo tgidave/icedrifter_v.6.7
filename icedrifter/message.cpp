@@ -22,6 +22,10 @@ bool processMessage(uint8_t *messageBuffPtr) {
   SerialMsg.begin(9600);
 
   xferDone = false;
+  xferGotData = false;
+  xferOverrun = false;
+//  xferNoResponse = false;
+  tries = 0;
 
   while (SerialMsg.available()) {
     SerialMsg.read();
@@ -40,6 +44,7 @@ bool processMessage(uint8_t *messageBuffPtr) {
     if (SerialMsg.available()) {
       messageBuffPtr[i] = SerialMsg.read();
       xferGotData = true;
+      tries = 0;
 
       if (messageBuffPtr[i] == '\n') {
         messageBuffPtr[i + 1] = '\0';
@@ -83,7 +88,8 @@ bool processMessage(uint8_t *messageBuffPtr) {
     if (xferGotData == true) {
       if(xferDone == false) {
       
-        DEBUG_SERIAL.println("Timeout receiving message!!!");
+        DEBUG_SERIAL.print("Timeout receiving message! i = ");
+        DEBUG_SERIAL.println(i);
 
       }
     }
@@ -101,6 +107,8 @@ bool processMessage(uint8_t *messageBuffPtr) {
     DEBUG_SERIAL.println("Done...");
     DEBUG_SERIAL.println((char *)messageBuffPtr);
     DEBUG_SERIAL.println();
+  } else {
+    DEBUG_SERIAL.println("No response!!!");
   }
 
 #endif 

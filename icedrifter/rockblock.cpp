@@ -38,7 +38,7 @@ void rbTransmitIcedrifterData(icedrifterData *idPtr, int idLen) {
   uint8_t *dataPtr;
   uint8_t *chunkPtr;
   uint8_t *wkPtr;
-  uint8_t *messageBuffPtr;
+  uint8_t *msgBuffPtr;
   struct tm *timeInfo;
   char *buffPtr;
   char buff[128];
@@ -200,9 +200,9 @@ if (dataLen == 0) {
       }
     }
 
-    if ((messageBuffPtr = checkForMessage()) != 0) {
-      dataLen = strlen(messageBuffPtr) + 1;
-      rc = isbd.sendSBDBinary(messageBuffPtr, dataLen);
+    if ((msgBuffPtr = checkForMessage()) != NULL) {
+//      dataLen = strlen(msgBuffPtr) + 1;
+      rc = isbd.sendSBDText(msgBuffPtr);
     }
 
 #ifdef SERIAL_DEBUG_ROCKBLOCK
