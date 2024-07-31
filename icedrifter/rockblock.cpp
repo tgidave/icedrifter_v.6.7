@@ -89,7 +89,7 @@ if (dataLen == 0) {
 
 #ifdef SERIAL_DEBUG_ROCKBLOCK
     strcat(oBuff, "\n*** Debug is ON ***\n");
-    DEBUG_SERIAL.print(oBuff);
+    DEBUG_SERIAL.print((char *)&oBuff);
     delay(1000);  
 #endif // SERIAL_DEBUG_ROCKBLOCK
   }
@@ -119,6 +119,7 @@ if (dataLen == 0) {
   DEBUG_SERIAL.flush();
   DEBUG_SERIAL.println(F("RockBLOCK begin\n"));
   DEBUG_SERIAL.flush();
+  delay(1000);
 #endif // SERIAL_DEBUG_ROCKBLOCK
   isbdss.listen();
 
@@ -131,6 +132,7 @@ if (dataLen == 0) {
     DEBUG_SERIAL.print(idLen);
     DEBUG_SERIAL.print(F("\n"));
     DEBUG_SERIAL.flush();
+    delay(1000);
 #endif // SERIAL_DEBUG_ROCKBLOCK
 
     recCount = 0;
@@ -151,6 +153,7 @@ if (dataLen == 0) {
         DEBUG_SERIAL.print(*wkPtr);
         DEBUG_SERIAL.print(F("\n"));
         DEBUG_SERIAL.flush();
+        delay(1000);
 #endif // SERIAL_DEBUG_ROCKBLOCK
       rc = isbd.sendSBDBinary((const uint8_t *)oBuff, dataLen);
 
@@ -202,7 +205,7 @@ if (dataLen == 0) {
 
     if ((msgBuffPtr = checkForMessage()) != NULL) {
 //      dataLen = strlen(msgBuffPtr) + 1;
-      rc = isbd.sendSBDText(msgBuffPtr);
+      rc = isbd.sendSBDBinary(msgBuffPtr, (strlen(msgBuffPtr) + 1));
     }
 
 #ifdef SERIAL_DEBUG_ROCKBLOCK

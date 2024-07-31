@@ -34,7 +34,7 @@
 
 //To turn off the debugging messages, comment out the next line.
 
-//#define SERIAL_DEBUG
+#define SERIAL_DEBUG
 
 //The following defines are used to control what data is transmitted during debugging.
 //If "SERIAL_DEBUG" is not defined they have no effect.
@@ -74,21 +74,20 @@
 
 #define PROCESS_REMOTE_TEMP
 
-#define PROCESS_MESSAGE
-  
-#ifdef PROCESS_MESSAGE
-  #define MESSAGE_BAUD  9600
-  #define MESSAGE_BUFF_SIZE 340
-#endif
-
-#ifdef ARDUINO
-
 // The next define controls whether or not data from the temperature and light
 // sensors are collected and reported.  If the temperature and light
 // chain sensor is not present, comment out the next line.
-//#define PROCESS_CHAIN_DATA
 
+//#define PROCESS_CHAIN_DATA
 #define DROP_CHAIN_RX_TX
+
+// This defines controls whether or not the icedrifter should look for data
+// collected from the gtracker system and report it back to the user.
+
+#define PROCESS_MESSAGE
+#define MESSAGE_BUFF_SIZE 340
+
+#ifdef ARDUINO
 
 // These defines are used to determine how many sensors are on the temperature and
 // light chain.  They are only used if PROCESS_CHAIN_DATA is defined so you do not
@@ -179,6 +178,6 @@ typedef struct icedrifterData {
 
 void printHexChar(uint8_t x);
 
-uint8_t* checkForMessage(void);
+char* checkForMessage(void);
 
 #endif // _ICEDRIFTER_H

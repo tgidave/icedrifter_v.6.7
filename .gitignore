@@ -9,5 +9,9 @@
 *.vpwhistu
 *.vpwhist
 *.vtg
+*.vpwwildcardcache
+*.old
 Debug
+build
+
 

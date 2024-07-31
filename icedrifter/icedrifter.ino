@@ -117,14 +117,14 @@ void printHexChar(uint8_t x) {
   Serial.print(hexchars[(x & 0x0f)]);
 }
 
-uint8_t* checkForMessage(void) {
-
+char* checkForMessage(void) {
+ 
   if (gotMessage == true) {
 #ifdef SERIAL_DEBUG
     DEBUG_SERIAL.println("Got msg!");
 #endif
     gotMessage = false;
-    return((uint8_t *)&messageBuff);
+    return((char *)&messageBuff);
   }
 #ifdef SERIAL_DEBUG
   DEBUG_SERIAL.println("No msg!");
@@ -214,6 +214,14 @@ void accumulateandsendData(void) {
   DEBUG_SERIAL.print(F("\n"));
 #endif // SERIAL_DEBUG
 
+// Before the data is sent out, check to see if there is a 
+// message waiting to be sent... 
+#ifdef PROCESS_MESSAGE
+  if (processMessage((uint8_t *)&messageBuff) == true) {
+    gotMessage = true;
+  }
+#endif
+
 #ifdef HUMAN_READABLE_DISPLAY
   rbTransmitIcedrifterData(&idData, 0);
 #else
@@ -279,12 +287,6 @@ void loop() {
   int sleepMins;  // Number of minutes to sleep before the processor is woken up.
 
   noFixFoundCount = 0;  // clear the no fix found count.
-
-#ifdef PROCESS_MESSAGE
-  if (processMessage((uint8_t *)&messageBuff[0]) == true) {
-    gotMessage = true;
-  }
-#endif
 
   digitalWrite(MS5837_DS18B20_GPS_POWER_PIN, HIGH);
   delay(1000);

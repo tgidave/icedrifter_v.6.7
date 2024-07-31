@@ -11,7 +11,6 @@ SoftwareSerial SerialMsg(MSG_RX, MSG_TX);
 bool processMessage(uint8_t *messageBuffPtr) {
 
   unsigned int msgLen;
-//  uint8_t *wkptr;
   int i;
   int tries;
   bool xferDone;
@@ -19,7 +18,7 @@ bool processMessage(uint8_t *messageBuffPtr) {
   bool xferOverrun;
 //  bool xferNoResponse;
 
-  SerialMsg.begin(9600);
+  SerialMsg.begin(MSG_BAUD);
 
   xferDone = false;
   xferGotData = false;
@@ -36,7 +35,7 @@ bool processMessage(uint8_t *messageBuffPtr) {
 
 #ifdef SERIAL_DEBUG_MESSAGE
   DEBUG_SERIAL.println("? sent...");
-#endif
+#endif // SERIAL_DEBUG_MESSAGE
 
   i = 0;
 
@@ -46,13 +45,14 @@ bool processMessage(uint8_t *messageBuffPtr) {
       xferGotData = true;
       tries = 0;
 
-      if (messageBuffPtr[i] == '\n') {
-        messageBuffPtr[i + 1] = '\0';
+      if (messageBuffPtr[i] == '\r') {
+        messageBuffPtr[i] = '\0';
         xferDone = true;
 
 #ifdef SERIAL_DEBUG_MESSAGE
         DEBUG_SERIAL.println("Got xferDone");
-#endif
+        delay(1000);
+#endif // SERIAL_DEBUG_MESSAGE
 
         break;
       }
@@ -79,7 +79,7 @@ bool processMessage(uint8_t *messageBuffPtr) {
     xferDone = false;
 #ifdef SERIAL_DEBUG_MESSAGE
     DEBUG_SERIAL.println("Overrun on message receive!!!");
-#endif
+#endif // SERIAL_DEBUG_MESSAGE
 
   } else {
 
@@ -89,12 +89,13 @@ bool processMessage(uint8_t *messageBuffPtr) {
       if(xferDone == false) {
       
         DEBUG_SERIAL.print("Timeout receiving message! i = ");
-        DEBUG_SERIAL.println(i);
-
+        DEBUG_SERIAL.print(i);
+        DEBUG_SERIAL.print(" tries = ");
+        DEBUG_SERIAL.println(tries);
       }
     }
 
-#endif
+#endif // SERIAL_DEBUG_MESSAGE
 
   }
 
@@ -111,9 +112,13 @@ bool processMessage(uint8_t *messageBuffPtr) {
     DEBUG_SERIAL.println("No response!!!");
   }
 
-#endif 
+#endif // SERIAL_DEBUG_MESSAGE
 
   SerialMsg.end();
+#ifdef DROP_MSG_RX_TX
+  digitalWrite(MSG_RX, LOW);
+  digitalWrite(MSG_TX, LOW);
+#endif  // DROP_MSG_RX_TX
   return(xferDone);
 }
 
