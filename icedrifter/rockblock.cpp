@@ -205,7 +205,7 @@ if (dataLen == 0) {
 
     if ((msgBuffPtr = (uint8_t *)checkForMessage()) != NULL) {
 //      dataLen = strlen(msgBuffPtr) + 1;
-      rc = isbd.sendSBDBinary((const uint8_t *)msgBuffPtr, (strlen(msgBuffPtr) + 1));
+      rc = isbd.sendSBDBinary((const uint8_t*)msgBuffPtr, (strlen(msgBuffPtr) + 1));
     }
 
 #ifdef SERIAL_DEBUG_ROCKBLOCK
