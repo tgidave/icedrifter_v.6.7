@@ -203,7 +203,7 @@ if (dataLen == 0) {
       }
     }
 
-    if ((msgBuffPtr = checkForMessage()) != NULL) {
+    if ((msgBuffPtr = (uint8_t *)checkForMessage()) != NULL) {
 //      dataLen = strlen(msgBuffPtr) + 1;
       rc = isbd.sendSBDBinary(msgBuffPtr, (strlen(msgBuffPtr) + 1));
     }
