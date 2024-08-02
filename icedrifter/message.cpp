@@ -19,7 +19,7 @@ bool processMessage(uint8_t *messageBuffPtr) {
 
   while (1) {
 
-    if(rtn = getMessage(messageBuffPtr) == true) {
+    if((rtn = getMessage(messageBuffPtr)) == true) {
       break;
     }
 

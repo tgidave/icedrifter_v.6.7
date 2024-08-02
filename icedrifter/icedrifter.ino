@@ -217,9 +217,7 @@ void accumulateandsendData(void) {
 // Before the data is sent out, check to see if there is a 
 // message waiting to be sent... 
 #ifdef PROCESS_MESSAGE
-  if (processMessage((uint8_t *)&messageBuff) == true) {
-    gotMessage = true;
-  }
+  gotMessage = processMessage((uint8_t *)&messageBuff);
 #endif
 
 #ifdef HUMAN_READABLE_DISPLAY
