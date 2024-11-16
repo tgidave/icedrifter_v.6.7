@@ -35,14 +35,15 @@
 #include "gps.h"
 #include "ms5837_02ba.h"
 #include "ds18b20.h"
+#include "rockblockqueue.h"
 
 #ifdef PROCESS_CHAIN_DATA
   #include "chain.h"
 #endif //PROCESS_CHAIN_DATA
 
-#ifdef PROCESS_MESSAGE
-  #include "message.h"
-#endif
+//#ifdef PROCESS_MESSAGE
+//  #include "message.h"
+//#endif
 
 #include "rockblock.h"
 
@@ -103,10 +104,10 @@ icedrifterData idData;  // Structure for accumulating and sending sensor data,
 
 time_t lbTime;  // Time and date of the last boot.
 
-#ifdef PROCESS_MESSAGE
-uint8_t messageBuff[MESSAGE_BUFF_SIZE]; // Buffer used to receive and transmit any available message.
-bool gotMessage;                        // Indicator that a message was received and needs to be transmitted.
-#endif  // PROCESS_MESSAGE
+//#ifdef PROCESS_MESSAGE
+//uint8_t messageBuff[MESSAGE_BUFF_SIZE]; // Buffer used to receive and transmit any available message.
+//bool gotMessage;                        // Indicator that a message was received and needs to be transmitted.
+//#endif  // PROCESS_MESSAGE
 
 // print hex charactors mainly for debugging perposes.
 
@@ -216,15 +217,17 @@ void accumulateandsendData(void) {
 
 // Before the data is sent out, check to see if there is a 
 // message waiting to be sent... 
-#ifdef PROCESS_MESSAGE
-  gotMessage = processMessage((uint8_t *)&messageBuff);
-#endif
+//#ifdef PROCESS_MESSAGE
+//  gotMessage = processMessage((uint8_t *)&messageBuff);
+//  rbqAddMessage(gotMessage, 0, RBQ_MSG_TYPE_CHAR)
+//#endif
 
-#ifdef HUMAN_READABLE_DISPLAY
-  rbTransmitIcedrifterData(&idData, 0);
-#else
-  rbTransmitIcedrifterData(&idData, totalDataLength);
-#endif // HUMAN_READABLE_DISPLAY
+
+//#ifdef HUMAN_READABLE_DISPLAY
+//  processDataHumanReadable(&idData, 0, RBQ_MSG_TYPE_CHAR);
+//#else
+  rbqAddMessage(&idData, totalDataLength, RBQ_MSG_TYPE_SENSOR);
+//#endif // HUMAN_READABLE_DISPLAY
 
 }
 

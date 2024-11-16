@@ -6,7 +6,8 @@
  */                                                                              
 
 #ifndef _ICEDRIFTER_H
-#define _ICEDRIFTER_H
+  #define _ICEDRIFTER_H
+
 #include <time.h>
 
 #define HARDWARE_VERSION "6.7"
@@ -34,7 +35,7 @@
 
 //To turn off the debugging messages, comment out the next line.
 
-//#define SERIAL_DEBUG
+#define SERIAL_DEBUG
 
 //The following defines are used to control what data is transmitted during debugging.
 //If "SERIAL_DEBUG" is not defined they have no effect.
@@ -84,7 +85,7 @@
 // This defines controls whether or not the icedrifter should look for data
 // collected from the gtracker system and report it back to the user.
 
-#define PROCESS_MESSAGE
+//#define PROCESS_MESSAGE
 #define MESSAGE_BUFF_SIZE 340
 
 #ifdef ARDUINO

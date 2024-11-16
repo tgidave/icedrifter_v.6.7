@@ -9,21 +9,24 @@
 #define ROCKBLOCK_BAUD 19200
 #define ROCKBLOCK_POWER_PIN 15
 
-#define MAX_CHUNK_LENGTH  340
-#define CHUNK_HEADER_SIZE 8
-#define MAX_CHUNK_DATA_LENGTH (MAX_CHUNK_LENGTH - CHUNK_HEADER_SIZE)
+//#define MAX_CHUNK_LENGTH  340
+//#define CHUNK_HEADER_SIZE 8
+//#define MAX_CHUNK_DATA_LENGTH (MAX_CHUNK_LENGTH - CHUNK_HEADER_SIZE)
 
-typedef struct iceDrifterChunk {
-#ifdef ARDUINO
-  time_t idcSendTime;
-#else
-  uint32_t idcSendTime;
-#endif
-  char idcRecordType[2];
-  uint16_t idcRecordNumber;
-  uint8_t idcBuffer[MAX_CHUNK_LENGTH];
-} iceDrifterChunk; 
+//typedef struct iceDrifterChunk {
+//#ifdef ARDUINO
+//  time_t idcSendTime;
+//#else
+//  uint32_t idcSendTime;
+//#endif
+//  char idcRecordType[2];
+//  uint16_t idcRecordNumber;
+//  uint8_t idcBuffer[MAX_CHUNK_LENGTH];
+//} iceDrifterChunk; 
 
-void rbTransmitIcedrifterData(icedrifterData *, int);
+int rbInit(void);
+int rbTransmit(uint8_t *rbPtr, uint16_t rbLen, uint8_t rbType);
+void rbShutdown(void);
+int rbTransmitDataNow(uint8_t *rbPtr, int rbLen, int rbType);
 
 #endif  //_ROCKBLOCK_H
